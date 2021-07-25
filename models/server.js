@@ -46,10 +46,6 @@ class Servidor{
             console.log("El servidor esta corriendo en el puerto", this.port)
         })
     }
- 
-
- 
-
 }
 
 

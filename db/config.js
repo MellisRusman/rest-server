@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 
+
 const dbConection = async() =>{
     try {
         await mongoose.connect(process.env.MONGODB_ATLAS, {

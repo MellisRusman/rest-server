@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config()
 const Servidor = require("./models/server");
 
 const servidor = new Servidor();
