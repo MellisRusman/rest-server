@@ -1,6 +1,7 @@
 
 const express = require('express')
 const cors = require('cors')
+const { dbConection } = require("../db/config")
 
 class Servidor{
     constructor(){
@@ -11,6 +12,9 @@ class Servidor{
         //Puerto
         this.port = process.env.PORT
 
+        // Llamar a la base de datos
+        this.conectarDB()
+
         //MiddleWares
         this.middlewares()
 
@@ -20,6 +24,12 @@ class Servidor{
         //Rutas del archivo
         this.rutas()
     }
+
+    async conectarDB(){
+        await dbConection()
+    }
+
+
 
     middlewares(){
         //Directorio publico (public)
