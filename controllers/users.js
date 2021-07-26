@@ -4,17 +4,19 @@ const bcryptjs = require("bcryptjs");
 const { validationResult } = require('express-validator');
 
 
-const usuariosGet = (req = request, res = response) => {
-    const { q, nombre, page, id } = req.query;
+const usuariosGet = async(req = request, res = response) => {
 
+    const {limite = 3, desde = 0} = req.query
+
+    const [total , usuarios] = await Promise.all([
+        Usuario.countDocuments({estado : true}),
+        Usuario.find({estado : true})
+            .skip(Number(desde))
+            .limit(Number(limite))
+    ])
     res.json({
-        ok: 'pacho',
-        msg : 'get - controller',
-        q,
-        nombre,
-        page,
-        id
-
+        total,
+        usuarios
     })
 
 }
@@ -32,10 +34,7 @@ const usuariosPut = async(req , res = response) => {
     
     
     
-    res.json({
-        msg: 'put API - usuariosput',
-        usuario
-    })
+    res.json(usuario)
 }
 
 const usuariosPost = async(req, res = response) => {
@@ -56,12 +55,18 @@ const usuariosPost = async(req, res = response) => {
     })
     }
 
-const usuariosDelete = (req, res = response) => {
-    res.json({
-        ok: 'pacho',
-        msg : 'delete - controller'
-    })
-    }
+const usuariosDelete = async(req, res = response) => {
+
+    const {id} = req.params
+
+    //Borrado fisico
+
+    //const usuario = await Usuario.findByIdAndDelete(id)
+
+    const usuario = await Usuario.findByIdAndUpdate(id, {estado: false})
+
+    res.json({usuario})
+}
 
 const usuariosPatch = (req, res = response) => {
     res.json({
