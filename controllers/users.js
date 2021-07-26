@@ -19,31 +19,30 @@ const usuariosGet = (req = request, res = response) => {
 
 }
 
-const usuariosPut = (req, res = response) => {
-    const {id} = req.params
-    res.json({
-        ok: 'pacho',
-        msg : 'put - controller',
-        id
-    })
+const usuariosPut = async(req , res = response) => {
+    const {id} = req.params;
+    const {_id, password, google,correo, ...resto} = req.body;
+    if (password){
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync(password, salt)
     }
+
+
+    const usuario = await Usuario.findByIdAndUpdate(id , resto)
+    
+    
+    
+    res.json({
+        msg: 'put API - usuariosput',
+        usuario
+    })
+}
 
 const usuariosPost = async(req, res = response) => {
 
-    const errores = validationResult(req)
-    if (!errores.isEmpty()){
-        return res.status(400).json(errores)
-    }
     const { nombre, correo, password, rol} = req.body
     const usuario = new Usuario({nombre, correo, password, rol})
     //verificar si el correo existe
-
-    const existEmail = await Usuario.findOne({correo})
-    if (existEmail){
-        return res.status(400).json({
-            msg : 'El correo ya existe'
-        })
-    }
 
     //encriptar la contrasena
     const salt = bcryptjs.genSaltSync();

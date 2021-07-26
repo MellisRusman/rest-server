@@ -10,12 +10,6 @@ const dbConection = async() =>{
             useFindAndModify: false,
         })
         console.log('Base de datos conectada con el servidor')
-
-
-
-
-
-
     } catch (error) {
         console.log(error)
         throw new Error("Error al conectar la base de datos con el servidor")
