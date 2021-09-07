@@ -19,6 +19,7 @@ class Servidor{
         this.middlewares()
 
         this.usuarioPath = '/api/usuarios'
+        this.authPath = '/api/path'
         
 
         //Rutas del archivo
@@ -39,6 +40,7 @@ class Servidor{
     }
 
     rutas(){
+        this.app.use(this.authPath, require('../routes/path'))
         this.app.use(this.usuarioPath, require('../routes/users'))
     }
     listen(){
