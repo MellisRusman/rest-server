@@ -3,9 +3,12 @@ const { Router } = require('express')
 const { check } = require("express-validator")
 
 
-const { validarCampos } = require('../middlewars/validar-campos')
-const { validarJWT } = require('../middlewars/validar-jwt')
-
+const {
+    validarCampos,
+    validarJWT,
+    adminRole,
+    tieneRole
+} = require('../middlewars/')
 
 const {esRoleExist, existeMail, esUsuarioMongo} = require('../helpers/db-validators')
 
@@ -41,6 +44,14 @@ router.post('/',[
 
 router.delete('/:id',[
     validarJWT,
+
+    // El siguiente middleware permite eliminar solo a aquel que sea ADMIN_ROLE
+
+    //adminRole,
+
+    // Pero el siguiente middleware perimite eliminar a aquellos que sean 'ADMIN_ROLE', 'USER_ROLE', 'VENTAS_ROLE' o 'MANAGER_ROLE'
+
+    tieneRole('ADMIN_ROLE', 'USER_ROLE', 'VENTAS_ROLE', 'MANAGER_ROLE'),
     check('id', 'El id no es valido').isMongoId(),
     check('id').custom(esUsuarioMongo),
     validarCampos
