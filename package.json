@@ -19,4 +19,5 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.3"
   }
+
 }
